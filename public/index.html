@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Image Gallery</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 20px; background: #f9f9f9; }
+    h1 { text-align: center; }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 15px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .gallery img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    .gallery img:hover { transform: scale(1.05); }
+    .image-name {
+      text-align: center;
+      margin-top: 8px;
+      font-size: 0.9em;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h1>My Images</h1>
+  <div class="gallery" id="gallery"></div>
+
+  <script>
+    // List your image paths here (update this array manually)
+    const images = [
+        "images/Bears/Bearsimages/Bears/Bears_blue.jpg",
+        "images/Bears/Bearsimages/Bears/Bears_brown.jpg",
+        "images/Bears/Bearsimages/Bears/Bears_green.jpg",
+        "images/Bears/Bearsimages/Bears/Bears_orange.jpg",
+        "images/Bears/Bearsimages/Bears/Bears_pink.jpg",
+        "images/Bears/Bearsimages/Bears/Bears_purple.jpg",
+        "images/Bears/Bearsimages/Bears/Bears_red.jpg",
+        "images/Bears/Bearsimages/Bears/Bears_yellow.jpg",
+        "images/Bulls/bullsimages/Bulls/bulls_blue.jpg",
+        "images/Bulls/bullsimages/Bulls/bulls_brown.jpg",
+        "images/Bulls/bullsimages/Bulls/bulls_green.jpg",
+        "images/Bulls/bullsimages/Bulls/bulls_orange.jpg",
+        "images/Bulls/bullsimages/Bulls/bulls_pink.jpg",
+        "images/Bulls/bullsimages/Bulls/bulls_purple.jpg",
+        "images/Bulls/bullsimages/Bulls/bulls_red.jpg",
+        "images/Bulls/bullsimages/Bulls/bulls_yellow.jpg",
+        "images/Hawks/hawksimages/Hawks/hawks_blue.jpg",
+        "images/Hawks/hawksimages/Hawks/hawks_brown.jpg",
+        "images/Hawks/hawksimages/Hawks/hawks_green.jpg",
+        "images/Hawks/hawksimages/Hawks/hawks_orange.jpg",
+        "images/Hawks/hawksimages/Hawks/hawks_pink.jpg",
+        "images/Hawks/hawksimages/Hawks/hawks_purple.jpg",
+        "images/Hawks/hawksimages/Hawks/hawks_red.jpg",
+        "images/Hawks/hawksimages/Hawks/hawks_yellow.jpg",
+        "images/Lions/lionsimages/Lions/lions_blue.jpg",
+        "images/Lions/lionsimages/Lions/lions_brown.jpg",
+        "images/Lions/lionsimages/Lions/lions_green.jpg",
+        "images/Lions/lionsimages/Lions/lions_orange.jpg",
+        "images/Lions/lionsimages/Lions/lions_pink.jpg",
+        "images/Lions/lionsimages/Lions/lions_purple.jpg",
+        "images/Lions/lionsimages/Lions/lions_red.jpg",
+        "images/Lions/lionsimages/Lions/lions_yellow.jpg",
+        "images/Scorpions/Scorpionsimages/Scorpions/Scorpions_blue.jpg",
+        "images/Scorpions/Scorpionsimages/Scorpions/Scorpions_brown.jpg",
+        "images/Scorpions/Scorpionsimages/Scorpions/Scorpions_green.jpg",
+        "images/Scorpions/Scorpionsimages/Scorpions/Scorpions_orange.jpg",
+        "images/Scorpions/Scorpionsimages/Scorpions/Scorpions_pink.jpg",
+        "images/Scorpions/Scorpionsimages/Scorpions/Scorpions_purple.jpg",
+        "images/Scorpions/Scorpionsimages/Scorpions/Scorpions_red.jpg",
+        "images/Scorpions/Scorpionsimages/Scorpions/Scorpions_yellow.jpg",
+        "images/Sharks/sharksimages/Sharks/sharks_blue.jpg",
+        "images/Sharks/sharksimages/Sharks/sharks_brown.jpg",
+        "images/Sharks/sharksimages/Sharks/sharks_green.jpg",
+        "images/Sharks/sharksimages/Sharks/sharks_orange.jpg",
+        "images/Sharks/sharksimages/Sharks/sharks_pink.jpg",
+        "images/Sharks/sharksimages/Sharks/sharks_purple.jpg",
+        "images/Sharks/sharksimages/Sharks/sharks_red.jpg",
+        "images/Sharks/sharksimages/Sharks/sharks_yellow.jpg",
+        "images/Vipers/vipersimages/Vipers/vipers_blue.jpg",
+        "images/Vipers/vipersimages/Vipers/vipers_brown.jpg",
+        "images/Vipers/vipersimages/Vipers/vipers_green.jpg",
+        "images/Vipers/vipersimages/Vipers/vipers_orange.jpg",
+        "images/Vipers/vipersimages/Vipers/vipers_pink.jpg",
+        "images/Vipers/vipersimages/Vipers/vipers_purple.jpg",
+        "images/Vipers/vipersimages/Vipers/vipers_red.jpg",
+        "images/Vipers/vipersimages/Vipers/vipers_yellow.jpg",
+        "images/Wolves/wolvesimages/Wolves/wolves_blue.jpg",
+        "images/Wolves/wolvesimages/Wolves/wolves_brown.jpg",
+        "images/Wolves/wolvesimages/Wolves/wolves_green.jpg",
+        "images/Wolves/wolvesimages/Wolves/wolves_orange.jpg",
+        "images/Wolves/wolvesimages/Wolves/wolves_pink.jpg",
+        "images/Wolves/wolvesimages/Wolves/wolves_purple.jpg",
+        "images/Wolves/wolvesimages/Wolves/wolves_red.jpg",
+        "images/Wolves/wolvesimages/Wolves/wolves_yellow.jpg"
+      // Add all your images here...
+    ];
+
+    const gallery = document.getElementById('gallery');
+    images.forEach(src => {
+      const div = document.createElement('div');
+      div.innerHTML = `
+        <img src="${src}" alt="${src.split('/').pop()}" loading="lazy">
+        <div class="image-name">${src.split('/').pop()}</div>
+      `;
+      gallery.appendChild(div);
+    });
+  </script>
+</body>
+</html>
